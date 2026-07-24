@@ -188,6 +188,7 @@ chmod +x build.sh
 ```
 
 Modifie config/environment.js selon ton IP/domaine.
+
 12. Configurer nginx pour servir le site pool
 
 Édite /etc/nginx/sites-available/default :
