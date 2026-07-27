@@ -74,7 +74,7 @@ cd /home/<USER>/core-geth-1.12.20/build/bin
 ./geth account new --datadir /home/<USER>/classic/.ethereum/
 ```
 
-# Note bien ton adresse (0x...) et le mot de passe !
+## Note bien ton adresse (0x...) et le mot de passe !
 
 
 
