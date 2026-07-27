@@ -93,6 +93,7 @@ chown <USER>:<USER> /home/<USER>/.pw
 ```
 sudo nano /etc/systemd/system/geth.service
 ```
+
 Colle ce qui suit (modifie 0xTON_ADRESSE par l'adresse récupérée à l'étape 4 !) :
 
 ```
@@ -177,10 +178,11 @@ go build
     Adresse de daemon principale : "url": "http://127.0.0.1:8545"
 
 Édite 
-```
-/home/<USER>/open-etc-pool-friends/api.json
 
 ```
+/home/<USER>/open-etc-pool-friends/api.json
+```
+
 avec nano ou vim.
 
 
