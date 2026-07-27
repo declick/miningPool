@@ -4,24 +4,11 @@
 
 ### index page
 
-![index/miners page](/screenshots/01.png?raw=true "index/miners page")
-
 ### Donations
 
 * Donate 1% from pool fees to developers (Attention becomes automatic)
 
-
 * open-etc-pool-friends wallet ETC: 0xd92fa5a9732a0aec36dc8d5a6a1305dc2d3e09e6
-
-### Features
-
-### Email: office.poolnode@gmail.com
-
-### [YouTube](https://www.youtube.com/channel/UCeSEGwWB8LWtu7BM8OpH6yA).
-
-### [hey come check out Discord with me](https://discord.gg/zdnuXm4uby). 
-
-### [hey come check out Telegram with me](https://t.me/openetcpoolfriends).
 
 **This pool is being further developed to provide an easy to use pool for Ethereum Classic miners. This software is functional however an optimised release of the pool is expected soon. Testing and bug submissions are welcome!**
 
@@ -42,6 +29,7 @@ Dependencies:
   * redis-server >= 2.8.0
   * nodejs >= 4 LTS
   * nginx
+
 
 1. Mise à jour système + dépendances
 
@@ -262,7 +250,7 @@ sudo systemctl status api
 sudo journalctl -u api -f
 ```
 
-14. Vérifications finales
+* 14. Vérifications finales
 
     Geth = port 8545 ouvert, mining actif, pas d’erreur unlock !
 
@@ -279,24 +267,22 @@ sudo ufw allow 30305
 sudo ufw allow 8080
  ```
    
-#### Customization
+#### Personnalisation
 
-You can customize the layout using built-in web server with live reload:
+Vous pouvez personnaliser l'interface en utilisant le serveur web intégré avec rechargement automatique (live reload) :
 ```
     ember server --port 8082 --environment development
 ```
 
-**Don't use built-in web server in production**.
+**N'utilisez pas le serveur web intégré en production**.
 
-Check out <code>www/app/templates</code> directory and edit these templates
-in order to customise the frontend.
+Consultez le répertoire <code>www/app/templates</code> et modifiez les modèles (templates) qui s'y trouvent afin de personnaliser l'interface utilisateur (frontend).
 
 ### Configuration
 
-Configuration is actually simple, just read it twice and think twice before changing defaults.
+La configuration est relativement simple. Lisez-la attentivement et réfléchissez avant de modifier les valeurs par défaut.
 
-**Don't copy config directly from this manual. Use the example config from the package,
-otherwise you will get errors on start because of JSON comments.**
+**Ne copiez pas directement la configuration depuis cette documentation. Utilisez le fichier de configuration d'exemple fourni avec le package, sinon vous obtiendrez des erreurs au démarrage à cause des commentaires au format JSON.**
 
 ```javascript
 {
@@ -439,42 +425,41 @@ otherwise you will get errors on start because of JSON comments.**
 }
 ```
 
-If you are distributing your pool deployment to several servers or processes,
-create several configs and disable unneeded modules on each server. (Advanced users)
+Si vous répartissez le déploiement de votre pool sur plusieurs serveurs ou plusieurs processus, créez plusieurs fichiers de configuration et désactivez les modules inutiles sur chaque serveur. (Réservé aux utilisateurs avancés.)
 
-I recommend this deployment strategy:
+Je recommande la stratégie de déploiement suivante :
 
-* Mining instance - 1x (it depends, you can run one node for EU, one for US, one for Asia)
-* Unlocker and payouts instance - 1x each (strict!)
-* API instance - 1x
+* Instance de minage : 1 ou plusieurs (selon vos besoins ; par exemple, une instance pour l'Europe, une pour les États-Unis et une pour l'Asie).
+* Instance de déverrouillage (Unlocker) : 1 seule (obligatoire).
+* Instance de paiements (Payouts) : 1 seule (obligatoire).
+* Instance de l'API : 1 seule.
 
-### Notes
+### Remarques
 
-* Unlocking and payouts are sequential, 1st tx go, 2nd waiting for 1st to confirm and so on. You can disable that in code. Carefully read `docs/PAYOUTS.md`.
-* Also, keep in mind that **unlocking and payouts will halt in case of backend or node RPC errors**. In that case check everything and restart.
-* You must restart module if you see errors with the word *suspended*.
-* Don't run payouts and unlocker modules as part of mining node. Create separate configs for both, launch independently and make sure you have a single instance of each module running.
-* If `poolFeeAddress` is not specified all pool profit will remain on coinbase address. If it specified, make sure to periodically send some dust back required for payments.
+* Le déverrouillage des blocs et les paiements sont exécutés de manière séquentielle : la première transaction est envoyée, la suivante attend que la première soit confirmée, et ainsi de suite. Vous pouvez modifier ce comportement dans le code. Consultez attentivement le fichier `docs/PAYOUTS.md`.
+* Gardez également à l'esprit que le déverrouillage et les paiements s'arrêteront en cas d'erreur du backend ou de l'interface RPC du nœud. Si cela se produit, vérifiez la configuration et les services, puis redémarrez les modules concernés.
+* Si vous voyez des erreurs contenant le mot « suspended » (suspendu), vous devez redémarrer le module concerné.
+* N'exécutez pas les modules Payouts et Unlocker sur le même nœud que l'instance de minage. Créez des fichiers de configuration distincts pour chacun, lancez-les indépendamment et assurez-vous qu'une seule instance de chaque module est en cours d'exécution.
+* Si `poolFeeAddress` n'est pas renseigné, tous les bénéfices du pool resteront sur l'adresse coinbase. Si cette option est définie, veillez à renvoyer périodiquement une petite quantité de fonds (« dust ») vers cette adresse afin qu'elle puisse couvrir les frais nécessaires aux paiements.
 
 ### Mordor
 
-To use this pool on the mordor testnet two settings require changing to "mordor"
+Pour utiliser ce pool sur le réseau de test Mordor, deux paramètres doivent être modifiés en remplaçant leur valeur par "mordor" :
 
-network in your config.json (this sets backend (validation,unlocker) to mordor paramaters)
-APP.Network in your www/config/environment.js (this sets the frontend to mordor paramaters)
+network dans votre fichier config.json (cela configure le backend — validation, unlocker — avec les paramètres du réseau Mordor).
+APP.Network dans votre fichier www/config/environment.js (cela configure l'interface frontend avec les paramètres du réseau Mordor).
 rerun ./build.sh
 
+### Bonus) Comment sécuriser l'interface frontend du pool avec Let's Encrypt (HTTPS)
 
-### Extra) How To Secure the pool frontend with Let's Encrypt (https)
-
-First, install the Certbot's Nginx package with apt-get
+Tout d'abord, installez le paquet Certbot pour Nginx avec apt-get
 
 ```
  sudo apt-get update
  sudo apt-get install python3-certbot-nginx
 ```
 
-And then open your nginx setting file, make sure the server name is configured!
+Ensuite, ouvrez votre fichier de configuration Nginx et assurez-vous que le nom du serveur est correctement configuré :
 
 ```
  sudo nano /etc/nginx/sites-available/default
@@ -483,7 +468,7 @@ server_name <your-pool-domain>;
 . . .
 ```
 
-Change the _ to your pool domain, and now you can obtain your auto-renewaled ssl certificate for free!
+Remplacez le caractère _ par le domaine de votre pool. Vous pourrez alors obtenir gratuitement votre certificat SSL avec renouvellement automatique :
 
 ```
  sudo certbot --nginx -d <your-pool-domain>
