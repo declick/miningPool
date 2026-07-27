@@ -31,7 +31,7 @@ Dependencies:
   * nginx
 
 
-1. Mise à jour système + dépendances
+### 1. Mise à jour système + dépendances
 
 ```
 sudo apt-get update && sudo apt-get upgrade -y
@@ -39,7 +39,7 @@ sudo apt-get install -y git build-essential make golang redis-server nodejs npm 
 sudo ipset create blacklist hash:ip
 ```
 
-2. Installer Node.js 14 LTS et outils Node
+### 2. Installer Node.js 14 LTS et outils Node
 
 ```
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
@@ -48,7 +48,7 @@ sudo npm install -g bower
 sudo npm install -g ember-cli@2.18
 ```
 
-3. Télécharger et compiler Core-Geth
+### 3. Télécharger et compiler Core-Geth
 
 ```
 cd /home/<USER>
@@ -58,7 +58,7 @@ cd core-geth-1.12.20
 make all
 ```
 
-4. Préparer dossier blockchain & wallet
+### 4. Préparer dossier blockchain & wallet
 
 ```
 mkdir -p /home/<USER>/classic/.ethereum
@@ -69,14 +69,14 @@ cd /home/<USER>/core-geth-1.12.20/build/bin
 
 # Note bien ton adresse (0x...) et le mot de passe !
 
-5. Préparer fichier mot de passe
+### 5. Préparer fichier mot de passe
 
 ```
 echo "ICI_TON_MOT_DE_PASSE" > /home/<USER>/.pw
 chmod 600 /home/<USER>/.pw
 chown <USER>:<USER> /home/<USER>/.pw
 ```
-6. Créer le service systemd Core-Geth miner
+### 6. Créer le service systemd Core-Geth miner
 
 ```
 sudo nano /etc/systemd/system/geth.service
@@ -121,7 +121,7 @@ LimitNOFILE=4096
 WantedBy=multi-user.target
 ```
 
-7. Activer et lancer le service
+### 7. Activer et lancer le service
 
 ```
 sudo systemctl daemon-reload
@@ -131,7 +131,7 @@ sudo systemctl status geth
 sudo journalctl -u geth -f
 ```
 
-8. Vérifier que Core-Geth écoute
+### 8. Vérifier que Core-Geth écoute
 
 Test depuis la VM :
 
@@ -141,7 +141,7 @@ curl -X POST -H "Content-Type: application/json" \
   http://localhost:8545
 ```
 
-9. Installer et builder open-etc-pool-friends
+### 9. Installer et builder open-etc-pool-friends
 
 ```
 cd /home/<USER>
@@ -150,7 +150,7 @@ cd open-etc-pool-friends
 go build
 ```
 
-10. Configurer le pool
+### 10. Configurer le pool
 
     Copie api.json d’exemple, adapte : IP, ports, clés, etc.
 
@@ -163,7 +163,7 @@ go build
 ```
 avec nano ou vim.
 
-11. Installer et builder le frontend pool
+### 11. Installer et builder le frontend pool
 
 ```
 cd /home/<USER>/open-etc-pool-friends/www
@@ -177,7 +177,7 @@ chmod +x build.sh
 
 Modifie config/environment.js selon ton IP/domaine.
 
-12. Configurer nginx pour servir le site pool
+### 12. Configurer nginx pour servir le site pool
 
 Édite /etc/nginx/sites-available/default :
 
@@ -217,7 +217,7 @@ Puis relance nginx :
 sudo systemctl restart nginx
 ```
 
-13. Créer le service systemd API pool
+### 13. Créer le service systemd API pool
 
 ```
 sudo nano /etc/systemd/system/api.service
@@ -250,7 +250,7 @@ sudo systemctl status api
 sudo journalctl -u api -f
 ```
 
-* 14. Vérifications finales
+### 14. Vérifications finales
 
     Geth = port 8545 ouvert, mining actif, pas d’erreur unlock !
 
@@ -267,7 +267,7 @@ sudo ufw allow 30305
 sudo ufw allow 8080
  ```
    
-#### Personnalisation
+### Personnalisation
 
 Vous pouvez personnaliser l'interface en utilisant le serveur web intégré avec rechargement automatique (live reload) :
 ```
